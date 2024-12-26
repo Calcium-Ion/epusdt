@@ -2,6 +2,7 @@ package log
 
 import (
 	"fmt"
+	"os"
 	"time"
 
 	"github.com/assimon/luuu/config"
@@ -13,9 +14,16 @@ import (
 var Sugar *zap.SugaredLogger
 
 func Init() {
-	writeSyncer := getLogWriter()
+	// Create file writer
+	fileWriter := getLogWriter()
+	// Create console writer
+	consoleWriter := zapcore.AddSync(os.Stdout)
+
+	// Combine both writers
+	multiWriter := zapcore.NewMultiWriteSyncer(fileWriter, consoleWriter)
+
 	encoder := getEncoder()
-	core := zapcore.NewCore(encoder, writeSyncer, zapcore.DebugLevel)
+	core := zapcore.NewCore(encoder, multiWriter, zapcore.DebugLevel)
 	logger := zap.New(core, zap.AddCaller())
 	Sugar = logger.Sugar()
 }
