@@ -40,5 +40,5 @@ RUN mkdir -p runtime/logs
 # Expose port (adjust if needed based on your .env configuration)
 EXPOSE 8000
 
-# Run binary
-CMD ["./epusdt"]
+# Run binary with the specified command
+CMD ["./epusdt", "http", "start"]
