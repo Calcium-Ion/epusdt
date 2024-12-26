@@ -25,6 +25,7 @@ func (r ListenTrc20Job) Run() {
 	}
 	var wg sync.WaitGroup
 	for _, address := range walletAddress {
+		log.Sugar.Infof("ListenTrc20Job address: %s", address.Token)
 		wg.Add(1)
 		go service.Trc20CallBack(address.Token, &wg)
 	}
