@@ -35,6 +35,9 @@ var (
 	QueueLevelCritical int
 	QueueLevelDefault  int
 	QueueLevelLow      int
+	LogMaxSize         int
+	LogMaxBackups      int
+	LogMaxAge          int
 )
 
 // getEnv retrieves env var with fallback
@@ -127,6 +130,11 @@ func Init() {
 	QueueLevelCritical = getEnvInt("QUEUE_LEVEL_CRITICAL", 6)
 	QueueLevelDefault = getEnvInt("QUEUE_LEVEL_DEFAULT", 3)
 	QueueLevelLow = getEnvInt("QUEUE_LEVEL_LOW", 1)
+
+	// Log configs
+	LogMaxSize = getEnvInt("LOG_MAX_SIZE", 100)
+	LogMaxBackups = getEnvInt("LOG_MAX_BACKUPS", 3)
+	LogMaxAge = getEnvInt("LOG_MAX_AGE", 28)
 }
 
 func GetAppVersion() string {

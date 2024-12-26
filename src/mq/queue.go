@@ -7,19 +7,15 @@ import (
 	"github.com/assimon/luuu/mq/handle"
 	"github.com/assimon/luuu/util/log"
 	"github.com/hibiken/asynq"
-	"github.com/spf13/viper"
 )
 
 var MClient *asynq.Client
 
 func Start() {
 	redis := asynq.RedisClientOpt{
-		Addr: fmt.Sprintf(
-			"%s:%s",
-			viper.GetString("redis_host"),
-			viper.GetString("redis_port")),
-		DB:       viper.GetInt("redis_db"),
-		Password: viper.GetString("redis_passwd"),
+		Addr:     fmt.Sprintf("%s:%s", config.RedisHost, config.RedisPort),
+		DB:       config.RedisDB,
+		Password: config.RedisPassword,
 	}
 	initClient(redis)
 	go initListen(redis)

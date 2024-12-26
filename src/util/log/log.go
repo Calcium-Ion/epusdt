@@ -2,12 +2,12 @@ package log
 
 import (
 	"fmt"
+	"time"
+
 	"github.com/assimon/luuu/config"
 	"github.com/natefinch/lumberjack"
-	"github.com/spf13/viper"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
-	"time"
 )
 
 var Sugar *zap.SugaredLogger
@@ -33,9 +33,9 @@ func getLogWriter() zapcore.WriteSyncer {
 		time.Now().Format("20060102"))
 	lumberJackLogger := &lumberjack.Logger{
 		Filename:   file,
-		MaxSize:    viper.GetInt("log_max_size"),
-		MaxBackups: viper.GetInt("max_backups"),
-		MaxAge:     viper.GetInt("log_max_age"),
+		MaxSize:    config.LogMaxSize,
+		MaxBackups: config.LogMaxBackups,
+		MaxAge:     config.LogMaxAge,
 		Compress:   false,
 	}
 	return zapcore.AddSync(lumberJackLogger)
