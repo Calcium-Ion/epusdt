@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile
     ports:
-      - "7567:8000"
+      - "7567:8080"
     volumes:
       - ./src/static:/static
       - ./runtime/logs:/runtime/logs
