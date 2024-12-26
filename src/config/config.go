@@ -89,7 +89,7 @@ func Init() {
 	}
 
 	AppDebug = getEnvBool("APP_DEBUG", false)
-	StaticPath = getEnv("STATIC_PATH", "static")
+	StaticPath = getEnv("STATIC_PATH", "/static")
 	RuntimePath = fmt.Sprintf("%s%s", gwd, getEnv("RUNTIME_ROOT_PATH", "/runtime"))
 	LogSavePath = fmt.Sprintf("%s%s", RuntimePath, getEnv("LOG_SAVE_PATH", "/logs"))
 
