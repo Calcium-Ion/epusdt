@@ -2,6 +2,11 @@ package command
 
 import (
 	"context"
+	"net/http"
+	"os"
+	"os/signal"
+	"time"
+
 	"github.com/assimon/luuu/config"
 	"github.com/assimon/luuu/middleware"
 	"github.com/assimon/luuu/route"
@@ -11,11 +16,6 @@ import (
 	"github.com/labstack/echo/v4"
 	echoMiddleware "github.com/labstack/echo/v4/middleware"
 	"github.com/spf13/cobra"
-	"github.com/spf13/viper"
-	"net/http"
-	"os"
-	"os/signal"
-	"time"
 )
 
 var httpCmd = &cobra.Command{
@@ -48,11 +48,10 @@ func HttpServerStart() {
 	MiddlewareRegister(e)
 	// 路由注册
 	route.RegisterRoute(e)
-	// 静态目录注册
+	// 静态目录注���
 	e.Static(config.StaticPath, "static")
-	httpListen := viper.GetString("http_listen")
 	go func() {
-		if err = e.Start(httpListen); err != http.ErrServerClosed {
+		if err = e.Start(config.HttpListen); err != http.ErrServerClosed {
 			log.Sugar.Error(err)
 		}
 	}()

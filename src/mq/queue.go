@@ -2,6 +2,8 @@ package mq
 
 import (
 	"fmt"
+
+	"github.com/assimon/luuu/config"
 	"github.com/assimon/luuu/mq/handle"
 	"github.com/assimon/luuu/util/log"
 	"github.com/hibiken/asynq"
@@ -31,13 +33,11 @@ func initListen(redis asynq.RedisClientOpt) {
 	srv := asynq.NewServer(
 		redis,
 		asynq.Config{
-			// Specify how many concurrent workers to use
-			Concurrency: viper.GetInt("queue_concurrency"),
-			// Optionally specify multiple queues with different priority.
+			Concurrency: config.QueueConcurrency,
 			Queues: map[string]int{
-				"critical": viper.GetInt("queue_level_critical"),
-				"default":  viper.GetInt("queue_level_default"),
-				"low":      viper.GetInt("queue_level_low"),
+				"critical": config.QueueLevelCritical,
+				"default":  config.QueueLevelDefault,
+				"low":      config.QueueLevelLow,
 			},
 			Logger: log.Sugar,
 		},

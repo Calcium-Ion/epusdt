@@ -10,15 +10,31 @@ import (
 )
 
 var (
-	AppDebug    bool
-	MysqlDns    string
-	RuntimePath string
-	LogSavePath string
-	StaticPath  string
-	TgBotToken  string
-	TgProxy     string
-	TgManage    int64
-	UsdtRate    float64
+	AppDebug           bool
+	MysqlDns           string
+	RuntimePath        string
+	LogSavePath        string
+	StaticPath         string
+	TgBotToken         string
+	TgProxy            string
+	TgManage           int64
+	UsdtRate           float64
+	RedisHost          string
+	RedisPort          string
+	RedisDB            int
+	RedisPassword      string
+	RedisPoolSize      int
+	RedisMaxRetries    int
+	RedisIdleTimeout   time.Duration
+	HttpListen         string
+	MysqlMaxIdleConns  int
+	MysqlMaxOpenConns  int
+	MysqlMaxLifeTime   int
+	MysqlTablePrefix   string
+	QueueConcurrency   int
+	QueueLevelCritical int
+	QueueLevelDefault  int
+	QueueLevelLow      int
 )
 
 // getEnv retrieves env var with fallback
@@ -51,6 +67,15 @@ func getEnvFloat(key string, fallback float64) float64 {
 	return fallback
 }
 
+func getEnvInt(key string, fallback int) int {
+	if value := os.Getenv(key); value != "" {
+		if i, err := strconv.Atoi(value); err == nil {
+			return i
+		}
+	}
+	return fallback
+}
+
 func Init() {
 	// Load .env file if it exists
 	_ = godotenv.Load()
@@ -78,6 +103,30 @@ func Init() {
 	if manage := os.Getenv("TG_MANAGE"); manage != "" {
 		TgManage, _ = strconv.ParseInt(manage, 10, 64)
 	}
+
+	// Add Redis configuration
+	RedisHost = getEnv("REDIS_HOST", "localhost")
+	RedisPort = getEnv("REDIS_PORT", "6379")
+	RedisDB = getEnvInt("REDIS_DB", 0)
+	RedisPassword = getEnv("REDIS_PASSWORD", "")
+	RedisPoolSize = getEnvInt("REDIS_POOL_SIZE", 10)
+	RedisMaxRetries = getEnvInt("REDIS_MAX_RETRIES", 3)
+	RedisIdleTimeout = time.Second * time.Duration(getEnvInt("REDIS_IDLE_TIMEOUT", 300))
+
+	// HTTP configs
+	HttpListen = getEnv("HTTP_LISTEN", ":8080")
+
+	// MySQL configs
+	MysqlMaxIdleConns = getEnvInt("MYSQL_MAX_IDLE_CONNS", 10)
+	MysqlMaxOpenConns = getEnvInt("MYSQL_MAX_OPEN_CONNS", 100)
+	MysqlMaxLifeTime = getEnvInt("MYSQL_MAX_LIFE_TIME", 3600)
+	MysqlTablePrefix = getEnv("MYSQL_TABLE_PREFIX", "epusdt_")
+
+	// Queue configs
+	QueueConcurrency = getEnvInt("QUEUE_CONCURRENCY", 10)
+	QueueLevelCritical = getEnvInt("QUEUE_LEVEL_CRITICAL", 6)
+	QueueLevelDefault = getEnvInt("QUEUE_LEVEL_DEFAULT", 3)
+	QueueLevelLow = getEnvInt("QUEUE_LEVEL_LOW", 1)
 }
 
 func GetAppVersion() string {
