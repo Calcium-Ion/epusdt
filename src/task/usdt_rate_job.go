@@ -56,6 +56,7 @@ func (r UsdtRateJob) Run() {
 	for _, points := range usdtResp.Data.Points {
 		if len(points.C) > 0 && points.C[0] > 0 {
 			config.UsdtRate = math.MustParsePrecFloat64(points.C[0], 2)
+			log.Sugar.Info("usdt rate:", config.UsdtRate)
 			return
 		}
 	}

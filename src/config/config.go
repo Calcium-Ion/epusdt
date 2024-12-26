@@ -151,7 +151,7 @@ func GetUsdtRate() float64 {
 		return forcedRate
 	}
 	if UsdtRate <= 0 {
-		return 6.4
+		return 7.3
 	}
 	return UsdtRate
 }
