@@ -1,6 +1,9 @@
 package dao
 
 import (
+	"github.com/assimon/luuu/model"
+	"time"
+
 	"github.com/assimon/luuu/config"
 	"github.com/assimon/luuu/util/log"
 	"github.com/gookit/color"
@@ -9,7 +12,6 @@ import (
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 	"gorm.io/gorm/schema"
-	"time"
 )
 
 var Mdb *gorm.DB
@@ -44,4 +46,12 @@ func MysqlInit() {
 		panic(err)
 	}
 	log.Sugar.Debug("[store_db] mysql connDB success")
+
+	// Auto-migrate the schemas
+	err = Mdb.AutoMigrate(&model.Order{}, &model.WalletAddress{})
+	if err != nil {
+		log.Sugar.Errorf("Failed to auto-migrate schemas: %v", err)
+		panic(err)
+	}
+	log.Sugar.Debug("Auto-migrated database schemas successfully")
 }

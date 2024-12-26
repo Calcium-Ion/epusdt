@@ -1,0 +1,70 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "7567:8000"
+    volumes:
+      - ./src/static:/app/static
+      - ./runtime/logs:/app/runtime/logs
+    depends_on:
+      - mysql
+      - redis
+    restart: unless-stopped
+    environment:
+      - TZ=Asia/Shanghai
+      - APP_DEBUG=false
+      - STATIC_PATH=/app/static
+      - RUNTIME_ROOT_PATH=/app/runtime
+      - LOG_SAVE_PATH=/logs
+      - MYSQL_USER=${MYSQL_USER:-epusdt}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_HOST=mysql
+      - MYSQL_PORT=3306
+      - MYSQL_DATABASE=${MYSQL_DATABASE:-epusdt}
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_DB=0
+      - TG_BOT_TOKEN=${TG_BOT_TOKEN}
+      - TG_PROXY=${TG_PROXY}
+      - TG_MANAGE=${TG_MANAGE}
+      - APP_URI=${APP_URI}
+      - API_AUTH_TOKEN=${API_AUTH_TOKEN}
+
+  mysql:
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
+    volumes:
+      - mysql_data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE:-epusdt}
+      - MYSQL_USER=${MYSQL_USER:-epusdt}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - TZ=Asia/Shanghai
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    command: redis-server --requirepass ${REDIS_PASSWORD}
+    volumes:
+      - redis_data:/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  mysql_data:
+  redis_data: 
