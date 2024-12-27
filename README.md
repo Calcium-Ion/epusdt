@@ -1,4 +1,4 @@
-## Epusdt (Easy Payment Usdt)
+## Epusdt-Docker Forked from [BlueSkyXN/Epusdt](https://github.com/BlueSkyXN/Epusdt)
 <p align="center">
 <img src="wiki/img/usdtlogo.png">
 </p>
@@ -12,47 +12,29 @@
 
 
 ## 项目简介
-`Epusdt`（全称：Easy Payment Usdt）是一个由`Go语言`编写的私有化部署`Usdt`支付中间件(`Trc20网络`)     
-站长或开发者可通过`Epusdt`提供的`http api`集成至您的任何系统，无需过多的配置，仅仅依赖`mysql`和`redis`      
-可实现USDT的在线支付和消息回调，这一切在优雅和顷刻间完成！🎉        
-私有化搭建使得无需额外的手续费和签约费用，Usdt代币直接进入您的钱包💰      
-`Epusdt` 遵守 [GPLv3](https://www.gnu.org/licenses/gpl-3.0.html) 开源协议!
-
-## 项目特点
-- 支持私有化部署，无需担心钱包被篡改和吞单😁
-- `Go语言`跨平台实现，支持x86和arm芯片架构的win/linux设备
-- 多钱包地址轮询，提高订单并发率
-- 异步队列响应，优雅及高性能
-- 无需额外环境配置，仅运行一个编译后二进制文件即可使用
-- 支持`http api`，其他系统亦可接入
-- `Telegram`机器人接入，便捷使用和支付消息快速通知
-
-## 项目结构
-```
-Epusdt
-    ├── plugins ---> (已集成的插件库，例如dujiaoka)
-    ├── src ---> (项目核心目录）
-    ├── sdk ---> (接入SDK)
-    ├── sql ---> (安装sql文件或更新sql文件)
-    └── wiki ---> (知识库)
-```
+请查看原项目wiki [Epusdt](https://github.com/BlueSkyXN/Epusdt)
 
 ## 教程：
-- 宝塔运行`epusdt`教程👉🏻[宝塔运行epusdt](wiki/BT_RUN.md)
-- 不好意思我有洁癖，手动运行`epusdt`教程👉🏻[手动运行epusdt](wiki/manual_RUN.md)
-- 开发者接入`epusdt`文档👉🏻[开发者接入epusdt](wiki/API.md)
-- HTML+PHP极速运行`epusdt`教程👉🏻[使用PHPAPI-for-epusdt极速接入epusdt](https://github.com/BlueSkyXN/PHPAPI-for-epusdt)
+宝塔、手动运行请查看原项目wiki [Epusdt](https://github.com/BlueSkyXN/Epusdt)  
 
-## 已适配系统插件
-- 独角数卡[插件地址](plugins/dujiaoka)
+Docker 方式运行:  
+```
+git clone https://github.com/Calcium-Ion/epusdt-docker.git
+cd epusdt-docker
 
+# 修改配置文件
+cp .env.example .env
+nano .env
 
-## 🔥推荐服务器 
-- （美国免备案vps，配置2核2G仅需`20.98$`≈`145RMB`一年/支持支付宝付款）[👉🏻点我直达](https://my.racknerd.com/aff.php?aff=2745&pid=681)
+# 构建
+docker-compose build
 
-## 加入交流/意见反馈
-- `Epusdt`频道[https://t.me/epusdt](https://t.me/epusdt)
-- `Epusdt`交流群组[https://t.me/epusdt_group](https://t.me/epusdt_group)
+# 启动
+docker-compose up -d
+
+# 查看日志
+docker-compose logs -f
+```
 
 ## 设计实现
 `Epusdt`的实现方式与其他项目原理类似，都是通过监听`trc20`网络的api或节点，      
@@ -69,7 +51,7 @@ Epusdt
 ### 流程图：
 ![Implementation principle](wiki/img/implementation_principle.jpg)
 
-## 打赏
+## 打赏原作者
 如果该项目对您有所帮助，希望可以请我喝一杯咖啡☕️
 ```
 Usdt(trc20)打赏地址: TNEns8t9jbWENbStkQdVQtHMGpbsYsQjZK

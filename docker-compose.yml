@@ -17,7 +17,6 @@ services:
     environment:
       - TZ=Asia/Shanghai
       - APP_DEBUG=false
-      - LOG_SAVE_PATH=/logs
       - MYSQL_USER=${MYSQL_USER:-epusdt}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
       - MYSQL_HOST=mysql

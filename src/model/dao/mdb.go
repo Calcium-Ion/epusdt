@@ -1,9 +1,8 @@
 package dao
 
 import (
+	"github.com/assimon/luuu/model/mdb"
 	"time"
-
-	"github.com/assimon/luuu/model"
 
 	"github.com/assimon/luuu/config"
 	"github.com/assimon/luuu/util/log"
@@ -48,7 +47,7 @@ func MysqlInit() {
 	log.Sugar.Debug("[store_db] mysql connDB success")
 
 	// Auto-migrate the schemas
-	err = Mdb.AutoMigrate(&model.Order{}, &model.WalletAddress{})
+	err = Mdb.AutoMigrate(&mdb.Orders{}, &mdb.WalletAddress{})
 	if err != nil {
 		log.Sugar.Errorf("Failed to auto-migrate schemas: %v", err)
 		panic(err)

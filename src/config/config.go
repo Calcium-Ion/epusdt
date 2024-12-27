@@ -83,15 +83,10 @@ func Init() {
 	// Load .env file if it exists
 	_ = godotenv.Load()
 
-	gwd, err := os.Getwd()
-	if err != nil {
-		panic(err)
-	}
-
 	AppDebug = getEnvBool("APP_DEBUG", false)
-	StaticPath = getEnv("STATIC_PATH", "/static")
-	RuntimePath = fmt.Sprintf("%s%s", gwd, getEnv("RUNTIME_ROOT_PATH", "/runtime"))
-	LogSavePath = fmt.Sprintf("%s%s", RuntimePath, getEnv("LOG_SAVE_PATH", "/logs"))
+	RuntimePath = "/runtime"
+	LogSavePath = "/runtime/logs"
+	StaticPath = "/static"
 
 	// Build MySQL DNS
 	MysqlDns = fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local",
